@@ -18,8 +18,8 @@ params.r_max = 0.127;     % Maximum radius
 params.V_hardware = 0.2*pi*params.r_max^2; % extra hardware volume, if any
 
 %% Grain Geometry
-params.len = 1;          % motor grain length, etc.
-params.cs = finocyl_pointy(4, 5, 4, 0.4);
+geometry.depth = 1;       % motor grain length, etc.
+geometry.points = finocyl_pointy(4, 5, 4, 0.4);
 
 %% something
 P0      = 100;           % [Pa], for example
@@ -27,7 +27,9 @@ P0      = 100;           % [Pa], for example
 X0      = [ P0; ]; % combine into the state vector
 tspan   = [0, 30];        % want to simulate 2 seconds
 
-[tSol, XSol] = ode45(@(t,X) RocketSystem_Tapered(t, X, params), tspan, X0, odeset('RelTol', 1e-8, 'AbsTol', 1e-10, 'Events', @(t,X) EVENT_ACCELPHASECOMPLETE(t, X, params.r_max)));
+[tSol, xSol] = ode23(@(t,X) RocketSystem_Generic(t, X, params, geometry), tspan, X0, odeset('RelTol', 1e-8, 'AbsTol', 1e-10);
+
+%[tSol, XSol] = ode45(@(t,X) RocketSystem_Annular(t, X, params), tspan, X0, odeset('RelTol', 1e-8, 'AbsTol', 1e-10, 'Events', @(t,X) EVENT_ACCELPHASECOMPLETE(t, X, params.r_max)));
 
 P_sol    = XSol(:,1);   % pressure over time
 r_in_sol = XSol(:,2);   % inner radius over time
