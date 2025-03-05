@@ -19,7 +19,7 @@ params.V_hardware = 0.2*pi*params.r_max^2; % extra hardware volume, if any
 
 %% Grain Geometry
 geometry.depth = 1;       % motor grain length, etc.
-geometry.points = finocyl_pointy(4, 5, 4, 0.4);
+geometry.dfield = genDistanceField(params.r_max, finocyl_pointy(4, 5, 4, 0.4));
 
 %% something
 P0      = 100;           % [Pa], for example
